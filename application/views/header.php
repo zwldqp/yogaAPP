@@ -1,52 +1,12 @@
-<?php
-    $loginID = $this->session->userdata('logindata');
-?>
-
-<header class="am-topbar am-topbar-inverse admin-header">
-    <div class="am-topbar-brand">
-        <a href="javascript:;" class="tpl-logo">
-            <img src="assets/img/header.png" alt="">
-        </a>
-    </div>
-    <div class="am-icon-list tpl-header-nav-hover-ico am-fl am-margin-right">
-
+<!-- Begin page -->
+<header class="am-topbar am-topbar-fixed-top">
+    <div class="am-topbar-left am-hide-sm-only">
+        <a href="index.html" class="logo"><span>Yoga</span><i class="zmdi zmdi-layers"></i></a>
     </div>
 
-    <button class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-success am-show-sm-only" data-am-collapse="{target: '#topbar-collapse'}"><span class="am-sr-only">导航切换</span> <span class="am-icon-bars"></span></button>
-
-    <div class="am-collapse am-topbar-collapse" id="topbar-collapse">
-
-        <ul class="am-nav am-nav-pills am-topbar-nav am-topbar-right admin-header-list tpl-header-list">
-            <li class="am-dropdown" data-am-dropdown data-am-dropdown-toggle>
-                <a class="am-dropdown-toggle tpl-header-list-link" href="javascript:;">
-                    <span class="am-icon-bell-o"></span> 提醒 <span class="am-badge tpl-badge-success am-round">5</span></span>
-                </a>
-                <ul class="am-dropdown-content tpl-dropdown-content">
-                    <li class="tpl-dropdown-content-external">
-                        <h3>你有 <span class="tpl-color-success">5</span> 条提醒</h3><a href="###">全部</a></li>
-                    <li class="tpl-dropdown-list-bdbc"><a href="#" class="tpl-dropdown-list-fl"><span class="am-icon-btn am-icon-plus tpl-dropdown-ico-btn-size tpl-badge-success"></span> 【预览模块】移动端 查看时 手机、电脑框隐藏。</a>
-                        <span class="tpl-dropdown-list-fr">3小时前</span>
-                    </li>
-                    <li class="tpl-dropdown-list-bdbc"><a href="#" class="tpl-dropdown-list-fl"><span class="am-icon-btn am-icon-check tpl-dropdown-ico-btn-size tpl-badge-danger"></span> 移动端，导航条下边距处理</a>
-                        <span class="tpl-dropdown-list-fr">15分钟前</span>
-                    </li>
-                    <li class="tpl-dropdown-list-bdbc"><a href="#" class="tpl-dropdown-list-fl"><span class="am-icon-btn am-icon-bell-o tpl-dropdown-ico-btn-size tpl-badge-warning"></span> 追加统计代码</a>
-                        <span class="tpl-dropdown-list-fr">2天前</span>
-                    </li>
-                </ul>
-            </li>
-            <li class="am-hide-sm-only"><a href="javascript:;" id="admin-fullscreen" class="tpl-header-list-link"><span class="am-icon-arrows-alt"></span> <span class="admin-fullText">开启全屏</span></a></li>
-
-            <li class="am-dropdown" data-am-dropdown data-am-dropdown-toggle>
-                <a class="am-dropdown-toggle tpl-header-list-link" href="javascript:;">
-                    <span class="tpl-header-list-user-nick"><?php echo $loginID -> user_Name?> </span><span class="tpl-header-list-user-ico"> <img src="assets/img/user01.png"></span>
-                </a>
-                <ul class="am-dropdown-content">
-                    <li><a href="#"><span class="am-icon-cog"></span> 设置</a></li>
-                    <li><a href="#"><span class="am-icon-power-off"></span> 退出</a></li>
-                </ul>
-            </li>
-            <li><a href="###" class="tpl-header-list-link"><span class="am-icon-sign-out tpl-header-list-ico-out-size"></span></a></li>
-        </ul>
+    <div class="contain">
+            <h3 style="width: 150px; line-height:10px; margin-left: 150px;color: #00aced">成功源于努力</h3>
+            <h3 style="width: 150px;line-height: 10px;margin-left: 250px;color: #00aced">学习依靠态度</h3>
     </div>
 </header>
+<!-- end page -->

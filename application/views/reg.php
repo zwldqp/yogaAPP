@@ -1,55 +1,51 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>东北林业大学线上教育系统</title>
     <base href="<?php echo site_url() ?>">
-    <meta name="description" content="这是一个 index 页面">
-    <meta name="keywords" content="index">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="renderer" content="webkit">
-    <meta http-equiv="Cache-Control" content="no-siteapp"/>
-    <link rel="icon" type="image/png" href="assets/i/favicon.png">
-    <link rel="apple-touch-icon-precomposed" href="assets/i/app-icon72x72@2x.png">
-    <meta name="apple-mobile-web-app-title" content="Amaze UI"/>
-    <link rel="stylesheet" href="assets/css/amazeui.min.css"/>
-    <link rel="stylesheet" href="assets/css/admin.css">
-    <link rel="stylesheet" href="assets/css/app.css">
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" href="assets/css/core.css" />
+    <link rel="stylesheet" href="assets/css/menu.css" />
+    <link rel="stylesheet" href="assets/css/amazeui.css" />
+    <link rel="stylesheet" href="assets/css/component.css" />
+    <link rel="stylesheet" href="assets/css/page/form.css" />
 </head>
+<body>
+<div class="account-pages">
+    <div class="wrapper-page">
+        <div class="text-center">
+            <a href="index.html" class="logo"><span>Yoga选课系统</span></a>
+        </div>
 
-<body data-type="login">
-
-<div class="am-g myapp-login">
-    <div class="myapp-login-logo-block  tpl-login-max">
-        <div class="myapp-login-logo-text">
-            <div class="myapp-login-logo-text">
-                ZN<span> 在线学习系统</span>
+        <div class="m-t-40 card-box">
+            <div class="text-center">
+                <h4 class="text-uppercase font-bold m-b-0">Sign In</h4>
             </div>
-        </div>
-        <div class="login-font">
-        </div>
-        <div class="am-u-sm-10 login-am-center">
-            <form class="am-form" id="reg1" action="welcome/do_reg" method="POST">
-                <fieldset>
-                    <div class="am-form-group">
-                        <input type="text" class="" id="doc-ipt-email-1" name="username" placeholder="输入用户账号">
-                        <span id="name" >用户名必须十位纯数字</span>
+            <div class="panel-body">
+                <form class="am-form" method="post" action="welcome/do_reg">
+                    <div class="am-g">
+                        <div class="am-form-group">
+                            <input type="text" class="am-radius" id="doc-ipt-email-1" placeholder="输入用户账号" name="username">
+                            <span id="name" >用户名必须十位纯数字</span>
+                        </div>
+
+                        <div class="am-form-group form-horizontal m-t-20">
+                            <input type="password" class="am-radius" id="password" placeholder="输入密码" name="password">
+                            <span id="psw"></span>
+                        </div>
+
+                        <div class="am-form-group form-horizontal m-t-20">
+                            <input type="password" class="am-radius" id="doc-ipt-pwd-1" placeholder="再输一遍密码">
+                            <span id="psw2"></span>
+                        </div>
+
+                        <div class="am-form-group ">
+                            <button type="submit" class="am-btn am-btn-primary am-radius" style="width: 100%;height: 100%;" id="submit">提交</button>
+                        </div>
                     </div>
-                    <div >
-                        <input type="password" id="password" name="password"  placeholder="输入密码">
-                        <span id="psw"></span>
-                    </div>
-                    <div class="am-form-group">
-                        <input type="password" class="" id="doc-ipt-pwd-1" placeholder="再输一遍密码">
-                        <span id="psw2"></span>
-                    </div>
-                    <p>
-                        <button type="submit" class="am-btn am-btn-default" id="submit">提交</button>
-                    </p>
-                </fieldset>
-            </form>
+                </form>
+            </div>
         </div>
     </div>
 </div>
@@ -113,5 +109,4 @@
     })
 </script>
 </body>
-
 </html>

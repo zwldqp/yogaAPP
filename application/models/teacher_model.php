@@ -1,85 +1,70 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Teacher_model extends CI_Model{
-    public function getallclass(){
-        $sql="select c.cour_Name, t.teac_Name, c.cour_Credit,p.pict_Url,c.cour_Id from edu_course c, edu_select_course s, edu_teacher t,edu_picture p where c.cour_Id=s.cour_Id and s.teac_Id=t.teac_Id and p.pict_Id=c.pict_Id";
-        return $this->db->query($sql)->result();
+    public function get_teacher_by_uid($uid){
+        $sql = "select * from edu_teacher t WHERE t.user_Id=$uid";
+        return $this -> db -> query($sql) -> row();
     }
-    public function get_lesson_by_ti($user_id){
-        $sql="select c.cour_Name,  c.cour_Credit,p.pict_Url,c.cour_Id from edu_picture p, edu_course c, edu_select_course s, edu_teacher t where p.pict_Id=c.pict_Id and c.cour_Id=s.cour_Id and s.teac_Id=t.teac_Id and t.user_Id= $user_id";
-        return $this->db->query($sql)->result();
+    public function get_course_by_tid($tid){
+        $sql = "select * from edu_teach_course tc where tc.teac_Id=$tid";
+        return $this -> db -> query($sql) -> result();
     }
-    public function get_couser_id_by_course($course){
-        $sql="select cour_Id from edu_course where cour_Name = '$course'";
-        return $this->db->query($sql)->row();
+    public function get_students_by_cid($cid, $tid){
+        $sql = "select count(*) count from edu_select_course sc where sc.cour_Id=$cid and sc.teac_Id=$tid";
+        return $this -> db -> query($sql) -> row();
     }
-    public function get_teac_id_by_user_id($user_id){
-        $sql="select teac_Id from edu_teacher where user_Id = $user_id";
-        return $this->db->query($sql)->row();
+    public function get_course_name_by_cid($cid){
+        $sql = "select * from edu_course c where c.cour_Id=$cid";
+        return $this -> db -> query($sql) -> row();
     }
-
-    public function get_homework_by_teacher_id($tea_id){
-        $sql="select * from edu_homework where teac_Id= $tea_id";
-        return $this->db->query($sql)->result();
+    public function get_course(){
+        $sql = "select * from edu_course";
+        return $this -> db -> query($sql) -> result();
     }
-    public function get_stu_by_tea_id($tea_id){
-        $sql="select s.* ,u.user_Name from edu_select_course c,edu_student s,edu_user u where c.teac_Id= $tea_id and c.stud_Id = s.stud_Id and u.user_Id=s.user_Id";
-        return $this->db->query($sql)->result();
+    public function get_teach_course($cid,$tid){
+        $sql = "select s.*,c.* from edu_student s,edu_course c,edu_select_course t where t.teac_Id=$tid and t.cour_Id=$cid and s.stud_Id=t.stud_Id and c.cour_Id=$cid";
+        return $this -> db -> query($sql) -> result();
     }
-    public function save_test_by_tea_id($user_id,$name,$content,$data,$course_id,$start){
-        $this->db->insert('edu_homework',array(
-            'home_Id'=>null,
-            'home_Name'=>$name,
-            'home_content'=>$content,
-            'home_Start'=>$start,
-            'home_End'=>$data,
-            'teac_Id'=>$user_id,
-            'cour_Id'=>$course_id
-        ));
-        return $this->db->affected_rows();
+    public function del_teach_course_by_id($id){
+        $sql = "delete from edu_teach_course where teco_Id=$id";
+        $this -> db -> query($sql);
+        return $this -> db -> affected_rows();
     }
-    public function get_stu_id_by_user_name($name){
-        $sql="select s.stud_Id from edu_student s,edu_user u where s.user_Id=u.user_Id and u.user_Name = $name";
-        return $this->db->query($sql)->row();
+    public function del_select_course_by_id($cid, $tid){
+        $sql = "delete from edu_select_course where teac_Id=$tid and cour_Id=$cid";
+        $this -> db -> query($sql);
+        return $this -> db -> affected_rows();
     }
-    public function add_stu_to_tea($stu_id,$tea_id,$cour_id){
-        $this->db->insert('edu_select_course',array(
-            'seco_Id'=> null,
-            'stud_Id'=>$stu_id,
-            'cour_Id'=>$cour_id,
-            'teac_Id'=>$tea_id,
-        ));
-        return $this->db->affected_rows();
+    public function save_student_info($name, $email, $uid){
+        $sql="insert into edu_teacher VALUES (null, '$name', '$email', $uid)";
+        $this -> db -> query($sql);
+        return $this -> db -> affected_rows();
     }
-    public function get_stu_id_by_user_id($user_id){
-        $sql="select user_Id from edu_user where user_Name = $user_id";
-        return $this->db->query($sql)->row();
+    public function get_information($tid){
+        $sql="select * from edu_teacher where teac_Id=$tid";
+        return $this -> db -> query($sql) -> row();
     }
-    public function get_stu_or_not($stu_id,$cour_id,$tea_id){
-        $sql="select * from edu_select_course where stud_Id = '$stu_id'and cour_Id = '$cour_id' and teac_Id = '$tea_id'";
-        return $this->db->query($sql)->row();
+    public function up_teac_info($name, $email, $tid,$file){
+        $sql="update edu_teacher set teac_Name='$name',teac_Email='$email',teac_Img='$file' where teac_Id=$tid";
+        $this -> db -> query($sql);
+        return $this -> db -> affected_rows();
     }
-    public function del_stu($stu_name){
-        $sql="delete e.* from edu_select_course e,edu_student s where s.stud_Id=e.stud_Id and s.stud_Name = '$stu_name'";
-        $this->db->query($sql);
-        return $this->db->affected_rows();
+    public function save_kaoshi($id,$teacher,$time){
+        $sql="update edu_teach_course set kaoshi= '$time' where teac_Id=$teacher and cour_Id=$id";
+        $this -> db -> query($sql);
+        return $this -> db -> affected_rows();
     }
-    public function save_file($path,$file_name,$class_id,$class_name){
-        $this->db->insert('edu_file',array(
-            'file_Id'=> null,
-            'file_Url'=>$path,
-            'file_Type'=>$class_name,
-            'cour_Id'=>$class_id,
-            'file_Name'=>$file_name
-        ));
-        return $this->db->affected_rows();
+    public function get_news(){
+        $sql = "select * from news";
+        return $this -> db -> query($sql) -> result();
     }
-    public function get_vido_by_cour_id($cour_Id){
-        $sql="select * from edu_file where cour_Id=$cour_Id";
-        return $this->db->query($sql)->result();
+    public function get_stu_by_stu_id($id){
+        $sql = "select * from edu_student where stud_Id=$id";
+        return $this -> db -> query($sql) -> row();
     }
-    public function get_home_by_home_id($home_id){
-        $sql="select * from edu_homework where home_Id=$home_id";
-        return $this->db->query($sql)->row();
+    public function save_fenshu($fs,$stu,$cour,$teacher){
+        $sql="update edu_select_course set gread=$fs where teac_Id=$teacher and cour_Id=$cour and stud_Id = $stu";
+        $this -> db -> query($sql);
+        return $this -> db -> affected_rows();
     }
 }

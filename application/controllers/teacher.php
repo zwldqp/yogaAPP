@@ -1,181 +1,197 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Teacher extends CI_Controller{
-    public function t_index()
+class Teacher extends CI_Controller
+{
+    public function __construct()
     {
+        parent::__construct();
+        $this->load->model('user_modol');
         $this->load->model('teacher_model');
-        $results=$this->teacher_model->getallclass();
-        $this->load->view('t_index',array(
-            'results'=>$results
-        ));
     }
-    public function t_reg(){
+
+    public function t_reg()
+    {
         $this->load->view('t_reg');
     }
-    public function dot_itro(){
-        $username=$this->input->post('username');
-        $email=$this->input->post('email');
-        $gender=$this->input->post('gender');
-        $dec=$this->input->post('mor');
-        $this->load->model('user_modol');
-        $result=$this->user_modol->get_decid_by_mor($dec);
-        if(strstr($email,'@')){
-            $row=$this->user_modol->set_itro($username,$email,$gender,$result);
-            if($row>0){
-                redirect('welcome/t_index');
-            }else{
-                $this->load->view('t_introduce');
-            }
-        }else{
+
+    public function t_index()
+    {
+        $loginID = $this->session->userdata('logindata');
+        $teacher = $this->teacher_model->get_teacher_by_uid($loginID->user_Id);
+        if (!isset($teacher->teac_Id)) {
             $this->load->view('t_introduce');
-        }
-    }
-    public function t_view_evaluation()
-    {
-        $this->load->view('t_view_evaluation');
-    }
-
-    public function t_stu_information()
-    {
-        $user_id=$this -> session -> userdata('logindata')->user_Id;
-        $this->load->model('teacher_model');
-        $teac_id=$this->teacher_model->get_teac_id_by_user_id($user_id);
-        $results=$this->teacher_model->get_stu_by_tea_id($teac_id->teac_Id);
-        $this->load->view('t_stu_information',array(
-            'results'=>$results
-        ));
-    }
-    public function del_stu(){
-        $stu_name=$this->input->get('name');
-        $this->load->model('teacher_model');
-        $row=$this->teacher_model->del_stu($stu_name);
-        if($row>0){
-            redirect('teacher/t_stu_information');
-        }else{
-            echo 'erro';
-        }
-    }
-
-    public function t_introduce()
-    {
-        $this->load->view('t_introduce');
-    }
-    public function t_test(){
-        $user_id=$this -> session -> userdata('logindata')->user_Id;
-        $this->load->model('teacher_model');
-        $teac_id=$this->teacher_model->get_teac_id_by_user_id($user_id);
-        $results=$this->teacher_model->get_homework_by_teacher_id($teac_id->teac_Id);
-        $this->load->view('t_test',array(
-            'results'=>$results
-        ));
-    }
-    public function t_see_test(){
-        $home_id=$this->input->get('course');
-        $this->load->model('teacher_model');
-        $result=$this->teacher_model->get_home_by_home_id($home_id);
-        $this->load->view('t_see_test',array(
-            'result'=>$result
-        ));
-    }
-    public function t_add_test(){
-        $this->load->view('t_add_test');
-    }
-    public function add_test(){
-        $user_id=$this -> session -> userdata('logindata')->user_Id;
-        $name=$this->input->post('name');
-        $content=$this->input->post('content');
-        $data=$this->input->post('data');
-        $this->load->model('teacher_model');
-        $course=$this->input->post('course');
-        $course_id=$this->teacher_model->get_couser_id_by_course($course);
-        $teac_id=$this->teacher_model->get_teac_id_by_user_id($user_id);
-        $start=date("Y-m-d");
-        $row=$this->teacher_model->save_test_by_tea_id($teac_id->teac_Id,$name,$content,$data,$course_id->cour_Id,$start);
-        if($row){
-            redirect('teacher/t_lesson');
-        }
-    }
-    public function t_change_test(){
-        $home_id=$this->input->get('home');
-        $this->load->model('teacher_model');
-        $result=$this->teacher_model->get_home_by_home_id($home_id);
-        $this->load->view('t_change_test',array(
-            'result'=>$result
-        ));
-    }
-    public function t_lesson(){
-        $user_id=$this -> session -> userdata('logindata')->user_Id;
-        $this->load->model('teacher_model');
-        $results=$this->teacher_model->get_lesson_by_ti($user_id);
-        $this->load->view('t_lesson',array(
-            'results'=>$results
-        ));
-    }
-    public function t_up_lesson(){
-        $this->load->view('t_up_lesson');
-    }
-
-
-    public function t_up(){
-        $class_name = $this->input->post('class');
-        $file_name=$this->input->post('vdio');
-        $this->load->model('teacher_model');
-        $class_id=$this->teacher_model->get_couser_id_by_course($class_name);
-        error_reporting(E_ALL ^ E_NOTICE);
-        $filePath='assets/file/';
-        if(!is_dir($filePath)){
-            mkdir($filePath);
-        }
-        $type=array("txt","xlsx","mp4");
-        in_array((strtolower(substr(strchr($_FILES['file']['name'],'.'),1))),$type);
-        $filename=implode('.',$type);
-        $filename=time();
-        $filename=$filename.(strchr($_FILES['file']['name'],'.'));
-        if(file_exists($filePath)){
-            $bool=move_uploaded_file($_FILES['file']['tmp_name'],$filePath.$_FILES['file']['name']);
-            if($bool){
-                $row=$this->teacher_model->save_file($filePath.$_FILES['file']['name'],$file_name,$class_id->cour_Id,$class_name);
-                if($row>0){
-                    $str='上传成功';
-                    $this->load->view('t_up_lesson1',array(
-                        'str' => $str
-                    ));
-                }else{
-                    echo 'erro';
-
-                }
-            }else{
-                echo 'no';
+        } else {
+            $courses = $this->teacher_model->get_course_by_tid($teacher->teac_Id);
+            $this->session->set_userdata('teacher', $teacher);
+            $res = array();
+            foreach ($courses as $value) {
+                $course = $this->teacher_model->get_course_name_by_cid($value->cour_Id);
+                $count = $this->teacher_model->get_students_by_cid($value->cour_Id, $teacher->teac_Id);
+                $res[$course->cour_Name] = $count;
             }
-        }else{
-            echo 'hehe';
+            $this->load->view('t_index', array(
+                'res' => $res
+            ));
         }
     }
-    public function t_up_lesson1(){
-        $this->load->view('t_up_lesson1');
+
+    public function t_class_controller()
+    {
+        $loginID = $this->session->userdata('logindata');
+        $teacher = $this->teacher_model->get_teacher_by_uid($loginID->user_Id);
+        $courses = $this->teacher_model->get_course();
+        $teached = $this->teacher_model->get_course_by_tid($teacher->teac_Id);
+        $my_course = array();
+        foreach ($teached as $value) {
+            $my_course[$value->cour_Id] = $value;
+        }
+        $this->load->view('t_class_controller', array(
+            'courses' => $courses,
+            'my_course' => $my_course
+        ));
     }
-    public function t_choose_stu(){
-        $this->load->view('t_choose_stu');
+
+    public function t_del_class()
+    {
+        $loginID = $this->session->userdata('logindata');
+        $teacher = $this->teacher_model->get_teacher_by_uid($loginID->user_Id);
+        $id = $this->input->get('id');
+        $cid = $this->input->get('cid');
+        $del_tc_row = $this->teacher_model->del_teach_course_by_id($id);
+        $this->teacher_model->del_select_course_by_id($cid, $teacher->teac_Id);
+        if ($del_tc_row) {
+            redirect("teacher/t_index");
+        } else {
+            echo "操作失误，请重复操作";
+        }
     }
-    public function t_sor(){
-        $this->load->view('t_sor');
+
+    public function t_teach_class()
+    {
+        $loginID = $this->session->userdata('logindata');
+        $teacher = $this->teacher_model->get_teacher_by_uid($loginID->user_Id);
+        $cid = $this->input->get('id');
+        $results = $this->teacher_model->get_teach_course($cid, $teacher->teac_Id);
+        if ($results) {
+            $this->load->view('detailed', array(
+                'results' => $results
+            ));
+        } else {
+            echo "班级没有同学";
+        }
     }
-    public function t_insert_sor(){
-        $this->load->view('t_insert_sor');
+
+    public function logout()
+    {
+        $this->session->sess_destroy();
+        redirect("welcome/login");
     }
-    public function t_class_controllar(){
-        $this->load->view('t_class_controllar');
+
+    public function do_introduce()
+    {
+        $name = $this->input->get('name');
+        $email = $this->input->get('email');
+        $loginID = $this->session->userdata('logindata');
+        $row = $this->teacher_model->save_student_info($name, $email, $loginID->user_Id);
+        if ($row) {
+            redirect("teacher/t_index");
+        } else {
+            redirect("welcome/introduce_error");
+        }
     }
-    public function video_begin(){
-        $course_id=$this->input->get('course');
-        $this->load->model('teacher_model');
-        $results=$this->teacher_model->get_vido_by_cour_id($course_id);
-        $this->load->view('t_course_test',array(
+
+    public function t_inform()
+    {
+        $loginID = $this->session->userdata('logindata');
+        $teacher = $this->teacher_model->get_teacher_by_uid($loginID->user_Id);
+        $row = $this->teacher_model->get_information($teacher->teac_Id);
+        if ($row) {
+            $this->load->view('t_inform', array(
+                'row' => $row
+            ));
+        }
+    }
+
+    public function t_introduce1()
+    {
+        $this->load->view('t_introduce1');
+    }
+
+    public function up_introduce()
+    {
+        $name1 = $this->input->post('name');
+        $email = $this->input->post('email');
+        $loginID = $this->session->userdata('logindata');
+        $teacher = $this->teacher_model->get_teacher_by_uid($loginID->user_Id);
+        $file = $_FILES['file'];
+        $name = $file['name'];
+        $type = strtolower(substr($name, strrpos($name, '.') + 1));
+        $allow_type = array('jpg', 'jpeg', 'gif', 'png');
+        if (!in_array($type, $allow_type)) {
+            return;
+        }
+        if (!is_uploaded_file($file['tmp_name'])) {
+              return;
+        }
+        $upload_path = "assets/file/";
+        if (move_uploaded_file($file['tmp_name'], $upload_path . $file['name'])) {
+            $row = $this -> teacher_model -> up_teac_info($name1, $email,$teacher->teac_Id,$upload_path.$_FILES['file']['name']);
+                if($row>0){
+                    redirect("teacher/t_index");
+                }else{
+                    redirect("welcome/introduce_error");
+                }
+        } else {
+            echo "ddd";
+        }
+    }
+    public function t_kaoshi(){
+        $id=$this->input->get('id');
+            $this->load->view('t_kaoshi',array(
+                'id'=>$id
+            ));
+        }
+    public function add_kaoshi(){
+        $time=$this->input->post('time');
+        $id=$this->input->post('id');
+        $loginID = $this->session->userdata('logindata');
+        $teacher = $this->teacher_model->get_teacher_by_uid($loginID->user_Id);
+        $row=$this->teacher_model->save_kaoshi($id,$teacher->teac_Id,$time);
+        if($row>0){
+            $this->t_class_controller();
+        }
+    }
+    public function t_news(){
+        $results=$this->teacher_model->get_news();
+        $this->load->view('t_news',array(
             'results'=>$results
         ));
+    }
+    public function shangfen(){
+        $id=$this->input->get('id');
+        $cour=$this->input->get('cour');
+        $row=$this->teacher_model->get_stu_by_stu_id($id);
+        if($row){
+            $this->load->view('t_shangfen',array(
+                'row'=>$row,
+                'cour'=>$cour
+            ));
+        }
+    }
+    public function add_fenshu(){
+        $fs=$this->input->post('fs');
+        $stu=$this->input->post('stu');
+        $cour=$this->input->post('cour');
+        $loginID = $this->session->userdata('logindata');
+        $teacher = $this->teacher_model->get_teacher_by_uid($loginID->user_Id);
+        $row=$this->teacher_model->save_fenshu($fs,$stu,$cour,$teacher->teac_Id);
+        if($row>0){
+            $this->t_class_controller();
+        }else{
+            echo '上分失败';
+        }
     }
 }
-
 
 
 

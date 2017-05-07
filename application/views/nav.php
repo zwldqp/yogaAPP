@@ -1,69 +1,39 @@
-<div class="tpl-left-nav tpl-left-nav-hover">
-    <div class="tpl-left-nav-title">
-        ZN在线教育列表
-    </div>
-    <div class="tpl-left-nav-list">
-        <ul class="tpl-left-nav-menu">
-            <li class="tpl-left-nav-item">
-                <a href="student/index" class="nav-link subnav">
-                    <i class="am-icon-home"></i>
-                    <span>首页</span>
-                </a>
-            </li>
-            <li class="tpl-left-nav-item">
-                <a href="student/lesson" class="nav-link tpl-left-nav-link-list subnav">
-                    <i class="am-icon-bar-chart"></i>
-                    <span>我的课程</span>
-                    <i class="tpl-left-nav-content tpl-badge-danger"></i>
-                </a>
-            </li>
-            <li class="tpl-left-nav-item">
-                <a href="javascript:;" class="nav-link tpl-left-nav-link-list subnav">
-                    <i class="am-icon-table"></i>
-                    <span>选课中心</span>
-                    <i class="am-icon-angle-right tpl-left-nav-more-ico am-fr am-margin-right"></i>
-                </a>
-                <ul class="tpl-left-nav-sub-menu">
-                    <li>
-                        <a href="student/recommend" class="subnav">
-                            <i class="am-icon-angle-right"></i>
-                            <span>猜你喜欢</span>
-                            <i class="am-icon-star tpl-left-nav-content-ico am-fr am-margin-right"></i>
-                        </a>
-                        <a href="student/select_course" class="subnav">
-                            <i class="am-icon-angle-right"></i>
-                            <span>选课中心</span>
-                            <i class="tpl-left-nav-content tpl-badge-success"></i>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-            <li class="tpl-left-nav-item">
-                <a href="javascript:;" class="nav-link tpl-left-nav-link-list subnav">
-                    <i class="am-icon-wpforms"></i>
-                    <span>教师评价</span>
-                    <i class="am-icon-angle-right tpl-left-nav-more-ico am-fr am-margin-right"></i>
-                </a>
-                <ul class="tpl-left-nav-sub-menu">
-                    <li>
-                        <a href="student/evaluate" class="subnav">
-                            <i class="am-icon-angle-right"></i>
-                            <span>开始评价</span>
-                            <i class="am-icon-star tpl-left-nav-content-ico am-fr am-margin-right"></i>
-                        </a>
-                        <a href="student/view_evaluate" class="subnav">
-                            <i class="am-icon-angle-right"></i>
-                            <span>查看评价</span>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-            <li class="tpl-left-nav-item">
-                <a href="student/introduce" class="nav-link tpl-left-nav-link-list subnav">
-                    <i class="am-icon-key"></i>
-                    <span>完善信息</span>
-                </a>
-            </li>
+<!-- sidebar start -->
+<div class="admin-sidebar am-offcanvas  am-padding-0" id="admin-offcanvas">
+    <div class="am-offcanvas-bar admin-offcanvas-bar">
+        <!-- User -->
+        <div class="user-box am-hide-sm-only">
+            <div class="user-img">
+                <img src="assets/img/avatar-1.jpg" alt="user-img" title="Mat Helme" class="img-circle img-thumbnail img-responsive">
+                <div class="user-status offline"><i class="am-icon-dot-circle-o" aria-hidden="true"></i></div>
+            </div>
+            <h5><a href="#"><?php echo $student -> stud_Name?></a> </h5>
+            <ul class="list-inline">
+                <li>
+                    <a href="#">
+                        <i class="fa fa-cog" aria-hidden="true"></i>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#" class="text-custom">
+                        <i class="fa fa-cog" aria-hidden="true"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <!-- End User -->
+
+        <ul class="am-list admin-sidebar-list">
+            <li><a href="student/index"><span class="am-icon-home"></span> 首页</a></li>
+            <li><a href="student/select_course"><span class="am-icon-table"></span> 选课中心</a></li>
+            <li><a href="student/s_kaoshi"><span class="am-icon-table"></span> 我的考试</a></li>
+            <li><a href="student/s_news"><span class="am-icon-table"></span> 当今时事</a></li>
+            <li><a href="student/s_miji"><span class="am-icon-table"></span> 独家秘籍</a></li>
+            <li><a href="student/s_gread"><span class="am-icon-table"></span> 成绩查询</a></li>
+            <li><a href="student/modify_password"><span class="am-icon-table"></span> 个人信息</a></li>
+            <li><a href="student/logout"><span class="am-icon-file"></span> 退出</a></li>
         </ul>
     </div>
 </div>
+<!-- sidebar end -->

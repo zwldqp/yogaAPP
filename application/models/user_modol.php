@@ -41,4 +41,9 @@ class User_modol extends CI_Model {
 		$sql="select majo_Id from edu_major where majo_Name = $dec";
 		return $this->db->query($sql)->result();
 	}
+	public function update_password($user_Name, $new){
+	    $sql = "UPDATE edu_user SET user_Pwd = $new WHERE user_Name = '$user_Name'";
+        $this -> db -> query($sql);
+        return $this -> db -> affected_rows();
+    }
 }

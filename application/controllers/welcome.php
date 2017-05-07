@@ -13,7 +13,7 @@ class Welcome extends CI_Controller {
 
     public function check_name()
     {
-        $name=$this->input->get('uname');
+        $name=$this->input->get('username');
         $this->load->model('user_modol');
         $result=$this->user_modol->get_by_name_name($name);
         if($result){
@@ -35,11 +35,13 @@ class Welcome extends CI_Controller {
             $user_Power=$loginID->user_Power;
             if($user_Power==1){
                 redirect('student/index');
-            }else{
+            }else if($user_Power==2){
                 redirect('teacher/t_index');
+            }else{
+                redirect('admin/admin_index');
             }
         }else{
-            redirect('welcome/login');
+            redirect('welcome/login_error');
         }
     }
 
@@ -56,6 +58,21 @@ class Welcome extends CI_Controller {
         }else{
             redirect('student/reg');
         }
+    }
+    public function introduce_error(){
+        $this->load->view('introduce_error');
+    }
+    public function login_error(){
+        $this->load->view('login_error');
+    }
+    public function index2(){
+        $this->load->view('index2');
+    }
+    public function index5(){
+        $this->load->view('index5');
+    }
+    public function xiugai(){
+        $this->load->view('xiugai');
     }
 }
 

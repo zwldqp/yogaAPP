@@ -19,14 +19,6 @@ class Student_model extends CI_Model {
         $sql="select teac_Id from edu_teacher where teac_Name = '$name'";
         return $this->db->query($sql)->row();
     }
-    public function get_homework_by_sid($sid){
-        $sql="select * from edu_select_course sc, edu_homework h where h.teac_Id = sc.teac_Id and sc.stud_Id = $sid and sc.cour_Id = h.cour_Id";
-        return $this->db->query($sql)->result();
-    }
-    public function get_homework_by_id($sid, $id){
-        $sql="select * from edu_select_course sc, edu_homework h where h.teac_Id = sc.teac_Id and sc.stud_Id = $sid and sc.cour_Id = h.cour_Id and h.home_Id=$id";
-        return $this->db->query($sql)->row();
-    }
     public function get_course(){
         $sql="select * from edu_teach_course tc, edu_course c, edu_teacher t where tc.teac_Id = t.teac_Id and tc.cour_Id = c.cour_Id";
         return $this->db->query($sql)->result();
@@ -40,32 +32,14 @@ class Student_model extends CI_Model {
         $this -> db -> query($sql);
         return $this -> db -> affected_rows();
     }
-    public function save_course_in_select_course($tid, $cid, $sid){
-        $sql="insert into edu_select_course VALUES (null, $sid, $cid, $tid, 0, 1)";
+    public function save_course_in_select_course($sid, $cid, $tid){
+        $sql="insert into edu_select_course VALUES (null, $sid, $cid, $tid)";
         $this -> db -> query($sql);
         return $this -> db -> affected_rows();
     }
     public function get_teach_course_by_id($id){
         $sql="select * from edu_teach_course tc where tc.teco_Id = $id";
         return $this->db->query($sql)->row();
-    }
-    public function get_exam_by_student($sid){
-        $sql="select * from edu_select_course sc, edu_exam e where sc.stud_Id = $sid and e.teac_Id = sc.teac_Id and e.cour_Id = sc.stud_Id";
-        return $this->db->query($sql)->result();
-    }
-    public function save_do_home($sid, $id, $content){
-        $sql="insert into edu_do_work VALUES (null,$sid, $id, '$content')";
-        $this -> db -> query($sql);
-        return $this -> db -> affected_rows();
-    }
-    public function get_exam_by_id($sid, $id){
-        $sql="select * from edu_exam e, edu_exam_content ec, edu_select_course se where e.exam_Id=ec.exam_Id and e.exam_Id=$id and se.stud_Id=$sid and se.teac_Id=e.teac_Id and se.cour_Id=e.cour_Id";
-        return $this->db->query($sql)->result();
-    }
-    public function save_do_exam($sid, $id, $content){
-        $sql="insert into edu_do_exam VALUES (null,$id, $sid, '$content')";
-        $this -> db -> query($sql);
-        return $this -> db -> affected_rows();
     }
     public function get_teacher_by_course($cid){
         $sql="select * from edu_teach_course where cour_Id = $cid";
@@ -83,8 +57,30 @@ class Student_model extends CI_Model {
         $sql="select * from edu_course c where c.cour_Id = $cid";
         return $this -> db -> query($sql) -> row();
     }
-    public function get_file_by_cid($cid){
-        $sql="select * from edu_file f where f.cour_Id = $cid";
+    public function save_student_info($name, $email, $uid,$tel){
+        $sql="insert into edu_student VALUES (null,'$name', '$email', $uid,'$tel')";
+        $this -> db -> query($sql);
+        return $this -> db -> affected_rows();
+    }
+    public function get_kaoshi($teac,$cour){
+        $sql="select k.kaoshi,c.cour_Name from edu_teach_course k,edu_course c where k.cour_Id=$cour and k.teac_Id=$teac and c.cour_Id=$cour";
+        return $this -> db -> query($sql) -> row();
+    }
+    public function get_teacher($tid){
+        $sql="select * from edu_teacher where teac_Id = $tid";
+        return $this -> db -> query($sql) -> row();
+    }
+    public function get_gread($sid){
+        $sql = "select * from edu_select_course s,edu_course c where s.stud_Id=$sid and s.gread is not null and s.cour_Id=c.cour_Id";
+        return $this -> db -> query($sql) -> result();
+    }
+    public function up_infor($name,$email,$tel,$loginID){
+        $sql = "UPDATE edu_student SET stud_Email = '$email', stud_tel = '$tel', stud_Name = '$name' WHERE user_Id = $loginID";
+        $this -> db -> query($sql);
+        return $this -> db -> affected_rows();
+    }
+    public function get_miji(){
+        $sql="select * from edu_miji";
         return $this -> db -> query($sql) -> result();
     }
 }
